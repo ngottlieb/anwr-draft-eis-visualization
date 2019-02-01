@@ -1,25 +1,68 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from "react";
+import "./App.css";
+import MainMap from "./components/MainMap.js";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      programArea: null,
+      alternatives: null,
+      currentAlternative: "Alt_C",
+      filterUpdateKey: 0
+    };
+    this.loadProgramArea();
+    this.loadAlternatives();
+    this.triggerFilterUpdate = this.triggerFilterUpdate.bind(this);
+    this.changeAlternative = this.changeAlternative.bind(this);
+  }
+
+  triggerFilterUpdate() {
+    this.setState({
+      filterUpdateKey: this.state.filterUpdateKey + 1
+    });
+  }
+
+  changeAlternative(newAlt) {
+    this.setState({
+      currentAlternative: newAlt
+    });
+  }
+
+  async loadProgramArea() {
+    try {
+      const c = await import(/* webpackChunkName: "programArea" */ "./data/CoastalPlain_ProgramArea.json");
+      this.setState({
+        programArea: c.default,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async loadAlternatives() {
+    try {
+      const c = await import(/* webpackChunkName: "programArea" */ "./data/CoastalPlain_alts.json");
+      this.setState({
+        alternatives: c.default,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <MainMap
+          programArea={this.state.programArea}
+          alternatives={this.state.alternatives}
+          currentAlternative={this.state.currentAlternative}
+          triggerFilterUpdate={this.triggerFilterUpdate}
+          filterUpdateKey={this.state.filterUpdateKey}
+          changeAlternative={this.changeAlternative}
+        />
       </div>
     );
   }
