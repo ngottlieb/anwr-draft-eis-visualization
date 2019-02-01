@@ -33,7 +33,8 @@ class App extends Component {
 
   async loadProgramArea() {
     try {
-      const c = await import(/* webpackChunkName: "programArea" */ "./data/CoastalPlain_ProgramArea.json");
+      const response = await fetch("./data/CoastalPlain_ProgramArea.json");
+      const c = await response.json();
       this.setState({
         programArea: c.default,
       });
@@ -44,11 +45,15 @@ class App extends Component {
 
   async loadAlternatives() {
     try {
-      var altsData = {}
-      altsData["Alternative B"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_b.json");
-      altsData["Alternative C"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_c.json");
-      altsData["Alternative D1"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d1.json");
-      altsData["Alternative D2"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d2.json");
+      var altsData = {};
+      var resp1 = await fetch("./data/alternative_b.json");
+      altsData["Alternative B"] = await resp1.json();
+      var resp2 = await fetch("./data/alternative_c.json");
+      altsData["Alternative C"] = await resp2.json();
+      var resp3 = await fetch("./data/alternative_d1.json");
+      altsData["Alternative D1"] = await resp3.json();
+      var resp4 = await fetch("./data/alternative_d2.json");
+      altsData["Alternative D2"] = await resp4.json();
       this.setState({
         alternatives: altsData
       });
