@@ -9,8 +9,7 @@ const colorDefinitions = {
   "OG-NSO": "#beaed4",
   "OG-CSU": "#fdc086",
   "OG-TL": "#ffff99",
-  "OG-STC": "#386cb0",
-  "No Restriction": "#f0027f"
+  "OG-SaleSTC": "#f0027f",
 }
 
 class MainMap extends Component {
@@ -30,7 +29,7 @@ class MainMap extends Component {
       fillOpacity: "0.9",
       color: "rgb(49, 130, 189)",
     };
-    var color = colorDefinitions[feature.properties.designation] || colorDefinitions["No Restriction"];
+    var color = colorDefinitions[feature.properties.designation];
     styles.fillColor = color;
     return styles;
   }
