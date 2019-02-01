@@ -9,7 +9,7 @@ class App extends Component {
     this.state = {
       programArea: null,
       alternatives: null,
-      currentAlternative: "Alt_B",
+      currentAlternative: "Alternative B",
       filterUpdateKey: 0
     };
     this.loadProgramArea();
@@ -26,7 +26,8 @@ class App extends Component {
 
   changeAlternative(newAlt) {
     this.setState({
-      currentAlternative: newAlt
+      currentAlternative: newAlt,
+      filterUpdateKey: this.state.filterUpdateKey + 1
     });
   }
 
@@ -43,11 +44,11 @@ class App extends Component {
 
   async loadAlternatives() {
     try {
-      var altsData = [];
-      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_b.json"));
-      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_c.json"));
-      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d1.json"));
-      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d2.json"));
+      var altsData = {}
+      altsData["Alternative B"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_b.json");
+      altsData["Alternative C"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_c.json");
+      altsData["Alternative D1"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d1.json");
+      altsData["Alternative D2"] = await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d2.json");
       this.setState({
         alternatives: altsData
       });
@@ -63,7 +64,6 @@ class App extends Component {
           programArea={this.state.programArea}
           alternatives={this.state.alternatives}
           currentAlternative={this.state.currentAlternative}
-          triggerFilterUpdate={this.triggerFilterUpdate}
           filterUpdateKey={this.state.filterUpdateKey}
           changeAlternative={this.changeAlternative}
         />

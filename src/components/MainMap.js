@@ -5,11 +5,12 @@ import InfoPanel from './InfoPanel.js';
 import "./MainMap.css";
 
 const colorDefinitions = {
-  "OG-NoSale": "#edf8fb",
-  "OG-NSO": "#b2e2e2",
-  "OG-CSU": "#66c2a4",
-  "OG-TL": "#006d2c",
-  "OG-STC": "#006d2c"
+  "OG-NoSale": "#7fc97f",
+  "OG-NSO": "#beaed4",
+  "OG-CSU": "#fdc086",
+  "OG-TL": "#ffff99",
+  "OG-STC": "#386cb0",
+  "No Restriction": "#f0027f"
 }
 
 class MainMap extends Component {
@@ -21,21 +22,15 @@ class MainMap extends Component {
       zoom: 8,
     };
 
-    this.showFeature = this.showFeature.bind(this);
     this.featureStyle = this.featureStyle.bind(this);
-  }
-
-  showFeature(feature, layer) {
-    console.log(layer);
-    return false;
   }
 
   featureStyle(feature) {
     var styles = {
-      fillOpacity: "0.9"
+      fillOpacity: "0.9",
+      color: "rgb(49, 130, 189)",
     };
-    var color = colorDefinitions[feature.properties[this.props.currentAlternative]] || "#ffffff";
-    styles.color = color;
+    var color = colorDefinitions[feature.properties.designation] || colorDefinitions["No Restriction"];
     styles.fillColor = color;
     return styles;
   }
@@ -55,15 +50,15 @@ class MainMap extends Component {
     }
 
     var alternatives;
-    if (this.props.alternatives) {
-      alternatives = this.props.alternatives.map((data, i) => (
+    if (this.props.currentAlternative && this.props.alternatives) {
+      alternatives = (
         <GeoJSON
-          data={data}
+          data={this.props.alternatives[this.props.currentAlternative]}
           filter={this.showFeature}
-          key={this.props.filterUpdateKey + i}
+          key={this.props.filterUpdateKey}
           style={this.featureStyle}
         />
-      ));
+      );
     }
 
     return (
