@@ -26,7 +26,8 @@ class MainMap extends Component {
   }
 
   showFeature(feature, layer) {
-    return feature.properties[this.props.currentAlternative] !== "999"
+    console.log(layer);
+    return false;
   }
 
   featureStyle(feature) {
@@ -55,14 +56,14 @@ class MainMap extends Component {
 
     var alternatives;
     if (this.props.alternatives) {
-      alternatives = (
+      alternatives = this.props.alternatives.map((data, i) => (
         <GeoJSON
-          data={this.props.alternatives}
+          data={data}
           filter={this.showFeature}
-          key={this.props.filterUpdateKey}
+          key={this.props.filterUpdateKey + i}
           style={this.featureStyle}
         />
-      );
+      ));
     }
 
     return (

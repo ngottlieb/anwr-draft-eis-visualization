@@ -9,7 +9,7 @@ class App extends Component {
     this.state = {
       programArea: null,
       alternatives: null,
-      currentAlternative: "Alt_C",
+      currentAlternative: "Alt_B",
       filterUpdateKey: 0
     };
     this.loadProgramArea();
@@ -43,9 +43,13 @@ class App extends Component {
 
   async loadAlternatives() {
     try {
-      const c = await import(/* webpackChunkName: "programArea" */ "./data/CoastalPlain_alts.json");
+      var altsData = [];
+      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_b.json"));
+      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_c.json"));
+      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d1.json"));
+      altsData.push(await import(/* webpackChunkName: "alternativesData" */ "./data/alternative_d2.json"));
       this.setState({
-        alternatives: c.default,
+        alternatives: altsData
       });
     } catch (error) {
       console.log(error);
