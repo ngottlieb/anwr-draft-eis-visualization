@@ -8,7 +8,7 @@ class App extends Component {
 
     this.state = {
       programArea: null,
-      alternatives: null,
+      data: null,
       currentAlternative: "Alternative B",
       filterUpdateKey: 0
     };
@@ -55,7 +55,7 @@ class App extends Component {
       var resp4 = await fetch("./data/alternative_d2.json");
       altsData["Alternative D2"] = await resp4.json();
       this.setState({
-        alternatives: altsData
+        data: altsData
       });
     } catch (error) {
       console.log(error);
@@ -67,7 +67,7 @@ class App extends Component {
       <div className="App">
         <MainMap
           programArea={this.state.programArea}
-          alternatives={this.state.alternatives}
+          data={this.state.data}
           currentAlternative={this.state.currentAlternative}
           filterUpdateKey={this.state.filterUpdateKey}
           changeAlternative={this.changeAlternative}

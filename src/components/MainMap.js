@@ -1,16 +1,31 @@
 import React, {Component} from "react";
 import {Map, TileLayer, GeoJSON} from "react-leaflet";
-import Control from 'react-leaflet-control';
-import InfoPanel from './InfoPanel.js';
+import Control from "react-leaflet-control";
+import InfoPanel from "./InfoPanel.js";
 import "./MainMap.css";
 
-const colorDefinitions = {
-  "OG-NoSale": "#7fc97f",
-  "OG-NSO": "#beaed4",
-  "OG-CSU": "#fdc086",
-  "OG-TL": "#ffff99",
-  "OG-SaleSTC": "#f0027f",
-}
+const designations = {
+  "OG-NoSale": {
+    prettyName: "Not For Sale",
+    color: "#7fc97f"
+  },
+  "OG-NSO": {
+    prettyName: "No Surface Occupancy",
+    color: "#beaed4"
+  },
+  "OG-CSU": {
+    prettyName: "Controlled Surface Use",
+    color: "#fdc086"
+  },
+  "OG-TL": {
+    prettyName: "Timing Limitations",
+    color: "#ffff99"
+  },
+  "OG-SaleSTC": {
+    prettyName: "Standard Terms and Conditions",
+    color: "#f0027f"
+  }
+};
 
 class MainMap extends Component {
   constructor(props) {
@@ -29,7 +44,7 @@ class MainMap extends Component {
       fillOpacity: "0.9",
       color: "rgb(49, 130, 189)",
     };
-    var color = colorDefinitions[feature.properties.designation];
+    var color = designations[feature.properties.designation].color;
     styles.fillColor = color;
     return styles;
   }
@@ -38,21 +53,23 @@ class MainMap extends Component {
     return {
       color: "rgb(49, 130, 189)",
       fillColor: null,
-      fillOpacity: 0
+      fillOpacity: 0,
     };
   }
 
   render() {
     var programArea;
     if (this.props.programArea) {
-      programArea = <GeoJSON data={this.props.programArea} style={this.baseMapStyle} />;
+      programArea = (
+        <GeoJSON data={this.props.programArea} style={this.baseMapStyle} />
+      );
     }
 
     var alternatives;
-    if (this.props.currentAlternative && this.props.alternatives) {
+    if (this.props.currentAlternative && this.props.data) {
       alternatives = (
         <GeoJSON
-          data={this.props.alternatives[this.props.currentAlternative]}
+          data={this.props.data[this.props.currentAlternative]}
           filter={this.showFeature}
           key={this.props.filterUpdateKey}
           style={this.featureStyle}
@@ -68,12 +85,17 @@ class MainMap extends Component {
         />
         {programArea}
         {alternatives}
-        <InfoPanel currentAlternative={this.props.currentAlternative} changeAlternative={this.props.changeAlternative} />
+        <InfoPanel
+          currentAlternative={this.props.currentAlternative}
+          changeAlternative={this.props.changeAlternative}
+          data={this.props.data}
+          designations={designations}
+        />
         <Control position="bottomright" className="info legend">
-          { Object.keys(colorDefinitions).map((designation) => (
-            <React.Fragment key={designation}>
-              <i style={{background:colorDefinitions[designation]}} />
-              { designation }
+          {Object.keys(designations).map(d => (
+            <React.Fragment key={d}>
+              <i style={{background: designations[d].color}} />
+              {designations[d].prettyName}
               <br />
             </React.Fragment>
           ))}
