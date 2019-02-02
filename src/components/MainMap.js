@@ -41,7 +41,7 @@ class MainMap extends Component {
 
   featureStyle(feature) {
     var styles = {
-      fillOpacity: "0.9",
+      fillOpacity: "0.3",
       color: "rgb(49, 130, 189)",
     };
     var color = designations[feature.properties.designation].color;
@@ -80,8 +80,10 @@ class MainMap extends Component {
     return (
       <Map center={this.state.position} zoom={this.state.zoom} id="mapid">
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution="test"
+          url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}"
+          accessToken={mapboxToken}
+          attribution="data from <a href='https://eplanning.blm.gov/epl-front-office/eplanning/planAndProjectSite.do?methodName=dispatchToPatternPage&currentPageId=152115'>Alaska BLM</a> "
+          id="mapbox.outdoors"
         />
         {programArea}
         {alternatives}
@@ -106,3 +108,5 @@ class MainMap extends Component {
 }
 
 export default MainMap;
+
+const mapboxToken = 'pk.eyJ1IjoibmdvdHRsaWViIiwiYSI6ImNqcm1yZjk3ZDBtY3M0M3RrY2k0N3RjMDcifQ.onvCNE2GGEo63j53moDLMw';
