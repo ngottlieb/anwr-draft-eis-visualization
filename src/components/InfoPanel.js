@@ -2,22 +2,49 @@ import React, {Component} from "react";
 import Control from 'react-leaflet-control';
 import { Form} from 'react-bootstrap';
 import Statistics from './Statistics.js';
+import {ClipLoader} from 'react-spinners'
+import { css } from '@emotion/core';
+
 
 const alternatives = ["Alternative B", "Alternative C", "Alternative D1", "Alternative D2"];
 
 const defaultContainer =  ({children}) => <div className="control-panel">{children}</div>;
 
+
+
+
 class InfoPanel extends Component {
+
+  constructor(props){
+    super(props);
+    this.state =  {
+      loading : this.props.loading
+    }
+  }
+
+  _changeAlternative = event => {
+    this.setState({loading: true});
+    this.props.changeAlternative(event.target.value);
+  }
+
+
   render() {
     const Container = this.props.containerComponent || defaultContainer;
     const {settings} = this.props;
 
     return (
       <Container>
-        <h3>ANWR EIS Alternatives</h3>
+        <h3>
+          <ClipLoader
+            sizeUnit={"px"}
+            size={20}
+            color={'#123abc'}
+            loading={this.props.loading}
+          />
+          ANWR EIS Alternatives</h3>
         <p>Map showing land use designations for {this.props.currentAlternative}</p>
 
-        <div>Choose another: <Form as="select" defaultValue={this.props.currentAlternative} onChange={(event) => { this.props.changeAlternative(event.target.value); }}>
+        <div>Choose another: <Form as="select" defaultValue={this.props.currentAlternative} onChange={this._changeAlternative}>
         { alternatives.map((alt) => (<option key={alt}>{alt}</option>)) }
         </Form></div>
 

@@ -20,7 +20,8 @@ class App extends Component {
       programArea: null,
       data: null,
       currentAlternative: "Alternative B",
-      filterUpdateKey: 0
+      filterUpdateKey: 0,
+      loading: true
     };
     this.loadProgramArea();
     this.loadAlternatives();
@@ -34,10 +35,12 @@ class App extends Component {
     });
   }
 
+
+
   changeAlternative(newAlt) {
     this.setState({
       currentAlternative: newAlt,
-      filterUpdateKey: this.state.filterUpdateKey + 1
+      loading: true
     });
   }
 
@@ -74,14 +77,24 @@ class App extends Component {
     var alts_layers = [];
     var alts_sources = {};
     for (var alt in ALTERNATIVES){
-      alts_layers.push(dataLayer_template
+
+      var dataLayer = dataLayer_template
       .set('source', alt)
       .set('id', alt)
-      .setIn(['paint', 'fill-color', 'property'], ALTERNATIVES[alt]))
+
+      if(alt === this.state.currentAlternative){
+        console.log(alt)
+        dataLayer = dataLayer.setIn(['layout', 'visibility'], 'visible')
+      }
+
+
+      alts_layers.push(dataLayer)
+
 
       alts_sources[alt] = fromJS({
         type: 'geojson',
-        data: altsData[alt]
+        data: altsData[alt],
+        attribution: "<a href='https://eplanning.blm.gov/epl-front-office/eplanning/planAndProjectSite.do?methodName=dispatchToPatternPage&currentPageId=152115'>Alaska BLM</a>"
       })
 
     }
@@ -95,8 +108,6 @@ class App extends Component {
     //   layers: alts_layers
     // });
 
-    console.log(mapStyle.get('layers').toJS())
-
     this.setState({
       dataLayers: alts_layers,
       dataSources: alts_sources,
@@ -108,6 +119,7 @@ class App extends Component {
     return (
       <div className="App">
         <MainMap
+          loading = {this.state.loading}
           programArea={this.state.programArea}
           data={this.state.data}
           currentAlternative={this.state.currentAlternative}

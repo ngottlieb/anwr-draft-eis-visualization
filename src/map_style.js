@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable';
-import MAP_STYLE from "./map-style-basic-v8.json"
+import MAP_STYLE from "./outside-style.json"
 
 export const dataLayer_template = fromJS({
   id : null,
@@ -8,7 +8,7 @@ export const dataLayer_template = fromJS({
   interactive: 'true',
   paint: {
     'fill-color': {
-      'property' : null,
+      'property' : 'designation',
       'type': 'categorical',
       stops : [
         ["OG-NoSale" ,  "#7fc97f"],

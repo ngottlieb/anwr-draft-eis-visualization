@@ -2,7 +2,7 @@
   "name": "anwr-draft-eis-visualization",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://ngottlieb.github.io/anwr-draft-eis-visualization",
+  "homepage": "http://acannistra.github.io/anwr-draft-eis-visualization",
   "dependencies": {
     "bootstrap": "^4.2.1",
     "immutable": "^4.0.0-rc.12",
@@ -13,7 +13,8 @@
     "react-leaflet": "^2.2.0",
     "react-leaflet-control": "^2.0.0",
     "react-map-gl": "^4.0.10",
-    "react-scripts": "2.1.3"
+    "react-scripts": "2.1.3",
+    "react-spinners": "^0.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
