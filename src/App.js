@@ -1,6 +1,16 @@
 import React, {Component} from "react";
+import {fromJS} from 'immutable';
 import "./App.css";
 import MainMap from "./components/MainMap.js";
+import 'mapbox-gl/dist/mapbox-gl.css';
+import {dataLayer_template, defaultMapStyle} from './map_style.js'
+
+const ALTERNATIVES = {
+  "Alternative B" : "Alt_B",
+  "Alternative C" : "Alt_C",
+  "Alternative D1" : "Alt_D1",
+  "Alternative D2" : "Alt_D2"
+}
 
 class App extends Component {
   constructor(props) {
@@ -60,6 +70,38 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
+
+    var alts_layers = [];
+    var alts_sources = {};
+    for (var alt in ALTERNATIVES){
+      alts_layers.push(dataLayer_template
+      .set('source', alt)
+      .set('id', alt)
+      .setIn(['paint', 'fill-color', 'property'], ALTERNATIVES[alt]))
+
+      alts_sources[alt] = fromJS({
+        type: 'geojson',
+        data: altsData[alt]
+      })
+
+    }
+    var mapStyle = defaultMapStyle
+    .set('layers', defaultMapStyle.get('layers').concat(alts_layers))
+    .set('sources', defaultMapStyle.get('sources').concat(alts_sources))
+    //
+    // var mapStyle = fromJS({
+    //   version: 8,
+    //   sources: alts_sources,
+    //   layers: alts_layers
+    // });
+
+    console.log(mapStyle.get('layers').toJS())
+
+    this.setState({
+      dataLayers: alts_layers,
+      dataSources: alts_sources,
+      mapStyle: mapStyle
+    })
   }
 
   render() {
@@ -71,6 +113,7 @@ class App extends Component {
           currentAlternative={this.state.currentAlternative}
           filterUpdateKey={this.state.filterUpdateKey}
           changeAlternative={this.changeAlternative}
+          mapStyle={this.state.mapStyle}
         />
       </div>
     );
