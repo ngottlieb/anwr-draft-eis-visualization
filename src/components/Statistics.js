@@ -1,4 +1,7 @@
 import React, {Component} from "react";
+import {VictoryPie, VictoryChart, VictoryLegend} from 'victory';
+
+
 
 class Statistics extends Component {
   constructor(props) {
@@ -20,7 +23,7 @@ class Statistics extends Component {
         result += feature.properties["GIS_Acres"];
       }
     }
-    return Math.trunc(result).toLocaleString();
+    return Math.trunc(result);
   }
 
   totalForSale() {
@@ -34,24 +37,75 @@ class Statistics extends Component {
         result += feature.properties["GIS_Acres"]
       }
     }
-    return Math.trunc(result).toLocaleString();
+    return Math.trunc(result);
+  }
+
+  _getDesignationDatum(d) {
+    console.log(this.total(d))
+    if(this.total(d) > 0){
+      return({
+        x: this.state.designations[d].prettyName.replace(" ", '\n'),
+        y: this.total(d).toLocaleString(),
+        fill: this.state.designations[d].color,
+        name: this.state.designations[d].prettyName.replace(" ", '\n')
+      })
+    }
+
   }
 
   render() {
-    const designationsListEntries = Object.keys(this.state.designations).map((d) => (
-      <React.Fragment key={d}>
-        <dt>{this.state.designations[d].prettyName}</dt>
-        <dd>{this.total(d)}</dd>
-      </React.Fragment>
+    var designationsListEntries = Object.keys(this.state.designations).map((d) => (
+      this._getDesignationDatum(d)
+      // <React.Fragment key={d}>
+      //   <dt>{this.state.designations[d].prettyName}</dt>
+      //   <dd>{this.total(d)}</dd>
+      // </React.Fragment>
     ));
+    var allDesignations =
+    Object.keys(this.state.designations).map((d) => (
+      { name: this.state.designations[d].prettyName.replace(" ", '\n'),
+        fill : this.state.designations[d].color
+     }
+    ));
+    designationsListEntries = designationsListEntries.filter((el) => { return el != null;});
     return (
       <React.Fragment>
-        <h4>Statistics</h4>
         <h5>Total Acres Under Each Designation</h5>
-        <dl className="dl-horizontal">
-          { designationsListEntries }
-        </dl>
-        <h5>Total Acres for Sale: {this.totalForSale()}</h5>
+        <svg width={300} height={200}>
+                <VictoryLegend standalone={false}
+                  x={150} y={0}
+                  itemsPerRow = {4}
+                  width = {300}
+                  height = {200}
+                  orientation = 'vertical'
+                  style={{
+                      data: {
+                        fill: (d) => d.fill,
+                      }
+                    }}
+                  data={allDesignations}
+                />
+                <VictoryPie standalone={false}
+                  width={300} height={200}
+                  padding={{
+                  	left: 0, bottom: 20, top: 20, right: 150,
+                  }}
+                  data={designationsListEntries}
+                  labelRadius = {30}
+                  labels = {(d) => d.y}
+                  style={{
+                        data: {
+                          fill: (d) => d.fill,
+                        },
+                        labels : {
+                          fill: 'black',
+                          fontSize: 10,
+                          fontWeight: 'bold'
+                        }
+                      }}
+                />
+        </svg>
+        <h5>Total Acres for Sale: {this.totalForSale().toLocaleString()}</h5>
 
       </React.Fragment>
     );

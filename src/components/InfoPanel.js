@@ -4,6 +4,7 @@ import { Form} from 'react-bootstrap';
 import Statistics from './Statistics.js';
 import {ClipLoader} from 'react-spinners'
 import { css } from '@emotion/core';
+import {VictoryPie} from 'victory';
 
 
 const alternatives = ["Alternative B", "Alternative C", "Alternative D1", "Alternative D2"];

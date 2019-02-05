@@ -61,7 +61,7 @@ class App extends Component {
       var altsData = {};
       var resp1 = await fetch("./data/alternative_b.json");
       altsData["Alternative B"] = await resp1.json();
-      var resp2 = await fetch("./data/alternative_c.json");
+      var resp2 = await fetch("./data/alternative_c_rewrite.geojson");
       altsData["Alternative C"] = await resp2.json();
       var resp3 = await fetch("./data/alternative_d1.json");
       altsData["Alternative D1"] = await resp3.json();

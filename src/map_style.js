@@ -7,6 +7,7 @@ export const dataLayer_template = fromJS({
   type : 'fill',
   interactive: 'true',
   paint: {
+    'fill-outline-color': 'black',
     'fill-color': {
       'property' : 'designation',
       'type': 'categorical',
