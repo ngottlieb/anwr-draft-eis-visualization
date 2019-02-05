@@ -68,15 +68,15 @@ class Statistics extends Component {
      }
     ));
     designationsListEntries = designationsListEntries.filter((el) => { return el != null;});
+    console.log(allDesignations)
     return (
       <React.Fragment>
         <h5>Total Acres Under Each Designation</h5>
-        <svg width={300} height={200}>
+        <svg width={350} height={250}>
                 <VictoryLegend standalone={false}
-                  x={150} y={0}
-                  itemsPerRow = {4}
-                  width = {300}
-                  height = {200}
+                  x={190} y={0}
+                  width = {'100%'}
+                  height = {250}
                   orientation = 'vertical'
                   style={{
                       data: {
@@ -88,7 +88,7 @@ class Statistics extends Component {
                 <VictoryPie standalone={false}
                   width={300} height={200}
                   padding={{
-                  	left: 0, bottom: 20, top: 20, right: 150,
+                  	  top: 25, right: 110,
                   }}
                   data={designationsListEntries}
                   labelRadius = {30}
