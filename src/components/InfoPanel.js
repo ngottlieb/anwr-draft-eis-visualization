@@ -4,7 +4,7 @@ import { Form} from 'react-bootstrap';
 import Statistics from './Statistics.js';
 import {ClipLoader} from 'react-spinners'
 import { css } from '@emotion/core';
-import {VictoryPie} from 'victory';
+
 
 
 const alternatives = ["Alternative B", "Alternative C", "Alternative D1", "Alternative D2"];
@@ -18,14 +18,22 @@ class InfoPanel extends Component {
 
   constructor(props){
     super(props);
+    console.log(props.optionalLayers)
     this.state =  {
       loading : this.props.loading
     }
   }
 
+
+
   _changeAlternative = event => {
     this.setState({loading: true});
     this.props.changeAlternative(event.target.value);
+  }
+
+  _changeLayers = event => {
+    console.log('target', event.target.name, event.target.value)
+    this.props.changeLayers(event.target);
   }
 
 
@@ -49,6 +57,18 @@ class InfoPanel extends Component {
         { alternatives.map((alt) => (<option key={alt}>{alt}</option>)) }
         </Form></div>
 
+        <div>
+          <Form>
+            <label>Display Caribou Range:
+              <input
+                name = 'caribou'
+                type = 'checkbox'
+                checked = {this.props.optionalLayers['caribou']['visible']}
+                onChange = {this._changeLayers}
+              />
+            </label>
+          </Form>
+        </div>
         <hr />
         <Statistics currentAlternative={this.props.currentAlternative} designations={this.props.designations} data={this.props.data} />
 

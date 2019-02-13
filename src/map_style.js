@@ -26,4 +26,19 @@ export const dataLayer_template = fromJS({
   }
 });
 
+export const optionalLayer_template = fromJS({
+  id : null,
+  source : null,
+  type : 'fill',
+  interactive: 'true',
+  paint: {
+    'fill-outline-color': 'black',
+    'fill-color': 'blue',
+    'fill-opacity' : 0.2
+  },
+  layout: {
+    visibility: 'none'
+  }
+});
+
 export const defaultMapStyle = fromJS(MAP_STYLE)

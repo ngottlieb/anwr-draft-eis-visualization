@@ -3,7 +3,7 @@ import {fromJS} from 'immutable';
 import "./App.css";
 import MainMap from "./components/MainMap.js";
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {dataLayer_template, defaultMapStyle} from './map_style.js'
+import {dataLayer_template, defaultMapStyle, optionalLayer_template} from './map_style.js'
 
 const ALTERNATIVES = {
   "Alternative B" : "Alt_B",
@@ -21,12 +21,18 @@ class App extends Component {
       data: null,
       currentAlternative: "Alternative B",
       filterUpdateKey: 0,
-      loading: true
+      loading: true,
+      optionalLayers: {
+        'caribou' : {
+          'visible' : false
+        }
+      }
     };
     this.loadProgramArea();
     this.loadAlternatives();
     this.triggerFilterUpdate = this.triggerFilterUpdate.bind(this);
     this.changeAlternative = this.changeAlternative.bind(this);
+    this.changeLayers = this.changeLayers.bind(this);
   }
 
   triggerFilterUpdate() {
@@ -42,6 +48,21 @@ class App extends Component {
       currentAlternative: newAlt,
       loading: true
     });
+  }
+
+  changeLayers(toggledLayer) {
+    var optionalLayers = this.state.optionalLayers
+    var isVisible = this.state.optionalLayers[toggledLayer.name]['visible']
+    if(toggledLayer.value === 'on' && !isVisible){
+      optionalLayers[toggledLayer.name]['visible'] = true
+    }
+    if(toggledLayer.value === 'on' && isVisible){
+      optionalLayers[toggledLayer.name]['visible'] = false
+    } 
+    this.setState({
+      optionalLayers : optionalLayers
+    });
+    console.log(optionalLayers)
   }
 
   async loadProgramArea() {
@@ -67,6 +88,8 @@ class App extends Component {
       altsData["Alternative D1"] = await resp3.json();
       var resp4 = await fetch("./data/alternative_d2.json");
       altsData["Alternative D2"] = await resp4.json();
+      var caribou = await fetch("./data/caribou_range.json")
+      altsData['optional_caribou'] = await caribou.json()
       this.setState({
         data: altsData
       });
@@ -82,6 +105,12 @@ class App extends Component {
       .set('source', alt)
       .set('id', alt)
 
+      if (alt.startsWith("optional")){
+        dataLayer = optionalLayer_template
+        .set('source', alt)
+        .set('id', alt)
+      }
+
       if(alt === this.state.currentAlternative){
         console.log(alt)
         dataLayer = dataLayer.setIn(['layout', 'visibility'], 'visible')
@@ -96,6 +125,10 @@ class App extends Component {
         data: altsData[alt],
         attribution: "<a href='https://eplanning.blm.gov/epl-front-office/eplanning/planAndProjectSite.do?methodName=dispatchToPatternPage&currentPageId=152115'>Alaska BLM</a>"
       })
+
+      if (alt.startsWith("optional")){
+        alts_sources[alt] = alts_sources[alt].set('attribution', null)
+      }
 
     }
     var mapStyle = defaultMapStyle
@@ -125,6 +158,9 @@ class App extends Component {
           currentAlternative={this.state.currentAlternative}
           filterUpdateKey={this.state.filterUpdateKey}
           changeAlternative={this.changeAlternative}
+          changeLayers={this.changeLayers}
+          optionalLayers={this.state.optionalLayers}
+          changeLayers={this.changeLayers}
           mapStyle={this.state.mapStyle}
         />
       </div>

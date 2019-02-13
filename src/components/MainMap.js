@@ -46,6 +46,8 @@ const alt_colnames = {
   "Alternative D2" : "Alt_D2"
 }
 
+
+
 class MainMap extends Component {
   constructor(props) {
     super(props);
@@ -54,7 +56,7 @@ class MainMap extends Component {
     //   position: [69.85, -144],
     //   zoom: 8,
     // };
-
+    console.log("optional", props.optionalLayers)
 
     this.state = {
       viewport : {
@@ -64,6 +66,7 @@ class MainMap extends Component {
       },
       map_style : this.props.mapStyle,
       currentAlternative: this.props.currentAlternative,
+      optionalLayers : this.props.optionalLayers,
       style_set: false,
       loading: this.props.loading
     }
@@ -123,6 +126,7 @@ class MainMap extends Component {
 
 
 
+
   render() {
 
     return (
@@ -138,6 +142,8 @@ class MainMap extends Component {
             loading = {this.state.loading}
             currentAlternative={this.props.currentAlternative}
             changeAlternative={this.props.changeAlternative}
+            changeLayers={this.props.changeLayers}
+            optionalLayers={this.props.optionalLayers}
             data={this.props.data}
             designations={designations}
         />
