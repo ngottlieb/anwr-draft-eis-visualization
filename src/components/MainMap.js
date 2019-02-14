@@ -4,6 +4,7 @@ import Control from "react-leaflet-control";
 import InfoPanel from "./InfoPanel.js";
 import {fromJS} from "immutable";
 import "./MainMap.css";
+import _ from 'lodash';
 
 
 const designations = {
@@ -83,6 +84,8 @@ class MainMap extends Component {
 
 
     static getDerivedStateFromProps(props, state) {
+      console.log('props', state)
+
       var derivedState = {}
 
       if(!state.style_set){
@@ -120,12 +123,43 @@ class MainMap extends Component {
       }
 
 
+      // if(state.map_style != null ){
+      //   console.log('editing optional layers')
+      //   var interimLayers = null
+      //   try{
+      //     interimLayers = derivedState.map_style.get('layers')
+      //   }
+      //   catch(err){
+      //     interimLayers = state.map_style.get('layers')
+      //   }
+      //   const layers = interimLayers
+      //       .map(layer => {
+      //
+      //         const id = layer.get('id');
+      //         try{
+      //           // drop optional
+      //           var new_id = id.split('_')[1]
+      //           if (props.optionalLayers[new_id]['visible']) {
+      //             return layer.setIn(['layout', 'visibility'], 'visible');
+      //           }
+      //           else{
+      //             return layer.setIn(['layout', 'visibility'], 'none')
+      //           }
+      //
+      //           return layer;
+      //         } catch(err){
+      //           console.log(err)
+      //           return layer
+      //         }
+      //       });
+      //
+      //   derivedState['map_style'] = state.map_style.set('layers', layers)
+      //   console.log("done")
+      // }
+      //
 
       return(derivedState)
     }
-
-
-
 
   render() {
 

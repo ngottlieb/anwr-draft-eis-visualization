@@ -5,11 +5,12 @@ import MainMap from "./components/MainMap.js";
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {dataLayer_template, defaultMapStyle, optionalLayer_template} from './map_style.js'
 
-const ALTERNATIVES = {
+const ALL_LAYERS = {
   "Alternative B" : "Alt_B",
   "Alternative C" : "Alt_C",
   "Alternative D1" : "Alt_D1",
-  "Alternative D2" : "Alt_D2"
+  "Alternative D2" : "Alt_D2",
+  "optional_caribou": "optional_caribou"
 }
 
 class App extends Component {
@@ -58,7 +59,7 @@ class App extends Component {
     }
     if(toggledLayer.value === 'on' && isVisible){
       optionalLayers[toggledLayer.name]['visible'] = false
-    } 
+    }
     this.setState({
       optionalLayers : optionalLayers
     });
@@ -99,7 +100,7 @@ class App extends Component {
 
     var alts_layers = [];
     var alts_sources = {};
-    for (var alt in ALTERNATIVES){
+    for (var alt in ALL_LAYERS){
 
       var dataLayer = dataLayer_template
       .set('source', alt)
@@ -127,7 +128,7 @@ class App extends Component {
       })
 
       if (alt.startsWith("optional")){
-        alts_sources[alt] = alts_sources[alt].set('attribution', null)
+        alts_sources[alt] = alts_sources[alt].set('attribution', "Other Sources")
       }
 
     }
@@ -160,7 +161,6 @@ class App extends Component {
           changeAlternative={this.changeAlternative}
           changeLayers={this.changeLayers}
           optionalLayers={this.state.optionalLayers}
-          changeLayers={this.changeLayers}
           mapStyle={this.state.mapStyle}
         />
       </div>

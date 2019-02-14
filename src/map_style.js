@@ -1,5 +1,5 @@
 import {fromJS} from 'immutable';
-import MAP_STYLE from "./outside-style.json"
+import MAP_STYLE from "./map-style-outdoors.json"
 
 export const dataLayer_template = fromJS({
   id : null,

@@ -32,7 +32,6 @@ class InfoPanel extends Component {
   }
 
   _changeLayers = event => {
-    console.log('target', event.target.name, event.target.value)
     this.props.changeLayers(event.target);
   }
 
@@ -73,6 +72,7 @@ class InfoPanel extends Component {
         <Statistics currentAlternative={this.props.currentAlternative} designations={this.props.designations} data={this.props.data} />
 
         <small>Map by <a href="http://www.nicholasgottlieb.com/">Nick Gottlieb</a> and <a href="http://www.anthonycannistra.com">Tony Cannistra</a>. <a href="https://www.github.com/ngottlieb/anwr-draft-eis-visualization">Code</a>.</small>
+
       </Container>
     );
   }
