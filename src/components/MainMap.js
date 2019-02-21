@@ -32,7 +32,7 @@ class MainMap extends Component {
     super(props);
 
     this.state = {
-      position: [69.85, -144],
+      position: [69.78, -143.55],
       zoom: 8,
     };
 
