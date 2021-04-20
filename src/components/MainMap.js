@@ -80,10 +80,10 @@ class MainMap extends Component {
     return (
       <Map center={this.state.position} zoom={this.state.zoom} id="mapid">
         <TileLayer
-          url="https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}"
+          url="https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/256/{z}/{x}/{y}@2x?access_token={accessToken}"
           accessToken={mapboxToken}
           attribution="data from <a href='https://eplanning.blm.gov/epl-front-office/eplanning/planAndProjectSite.do?methodName=dispatchToPatternPage&currentPageId=152115'>Alaska BLM</a> "
-          id="mapbox.outdoors"
+          id="outdoors-v10"
         />
         {programArea}
         {alternatives}
